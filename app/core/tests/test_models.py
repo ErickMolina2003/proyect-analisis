@@ -4,6 +4,8 @@ Test for models
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from core import models
+
 
 class ModelTests(TestCase):
     """Test models"""
@@ -46,3 +48,58 @@ class ModelTests(TestCase):
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_partner(self):
+        """Test creating a partner is successful."""
+        partner = models.Partner.objects.create(
+            first_name='Partner example',
+            dni='12345678',
+            is_active=True,
+            address='La Canada',
+        )
+        self.assertEqual(str(partner), partner.first_name)
+
+    def test_create_motorist(self):
+        """Test creating a motorist is successful."""
+        partner = models.Partner.objects.create(
+            first_name='Partner example',
+            dni='12345678',
+            is_active=True,
+            address='La Canada',
+        )
+        motorist = models.Motorist.objects.create(
+            id_partner=partner,
+            first_name='Motorist example',
+            dni='12345678',
+            is_active=True,
+            address='La Canada',
+        )
+        self.assertEqual(str(motorist), motorist.first_name)
+        self.assertEqual(partner.id, motorist.id_partner.id)
+
+    def test_create_truck(self):
+        """Test creating a truck is successfull"""
+        partner = models.Partner.objects.create(
+            first_name='Sample Partner',
+            dni='12345678',
+            address='La Canada',
+        )
+        truck = models.Truck.objects.create(
+            id_partner=partner,
+            truck_number='12345',
+            is_active=False,
+        )
+        self.assertEqual(str(truck), truck.truck_number)
+        self.assertEqual(truck.id_partner.id, partner.id)
+
+    def test_create_client(self):
+        """Test creating a client is successfull"""
+        client = models.Client.objects.create(
+            first_name='Sample Client',
+            last_name='Sample Client last name',
+            address='Sample Client address',
+            rtn='12345678',
+            phone_number='12345687',
+            email='example@example.com',
+        )
+        self.assertEqual(str(client), client.first_name)

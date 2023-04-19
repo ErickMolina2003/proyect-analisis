@@ -52,3 +52,59 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Partner(models.Model):
+    """Partner in the system"""
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    rtn = models.CharField(max_length=255, blank=True)
+    birth_date = models.DateField(blank=True, null=True)
+    phone_number = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, unique=True)
+    address = models.CharField(max_length=255, blank=True)
+    dni = models.CharField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.first_name
+
+
+class Motorist(models.Model):
+    """Motorist in the system"""
+    id_partner = models.ForeignKey("Partner", on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    rtn = models.CharField(max_length=255, blank=True)
+    birth_date = models.DateField(blank=True, null=True)
+    phone_number = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, unique=True)
+    address = models.CharField(max_length=255, blank=True)
+    dni = models.CharField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.first_name
+
+
+class Truck(models.Model):
+    """Truck in the system"""
+    id_partner = models.ForeignKey("Partner", on_delete=models.CASCADE)
+    truck_number = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.truck_number
+
+
+class Client(models.Model):
+    """Client in the system"""
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, blank=True)
+    rtn = models.CharField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.first_name
