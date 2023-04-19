@@ -53,11 +53,45 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class PartnerAdmin(admin.ModelAdmin):
+    """Define admin pages for partners"""
+    ordering = ['id']
+    list_display = ['email', 'first_name', 'last_name',
+                    'phone_number', 'is_active', ]
+
+
+class MotoristAdmin(admin.ModelAdmin):
+    """Define admin pages for partners"""
+    ordering = ['id']
+    list_display = ['email', 'first_name', 'last_name',
+                    'phone_number', 'is_active', ]
+
+
+class TruckAdmin(admin.ModelAdmin):
+    """Define admin pages for Trucks"""
+    ordering = ['id']
+    list_display = ['truck_number', 'is_active', ]
+
+
+class ClientAdmin(admin.ModelAdmin):
+    """Define admin for clients"""
+    ordering = ['id']
+    list_display = ['first_name', 'last_name',
+                    'address', 'rtn', 'phone_number', 'email']
+
+
+class FreightAdmin(admin.ModelAdmin):
+    """Define admin for Freight"""
+    list_display = ['id_client', 'id_partner',
+                    'id_motorist', 'id_truck', 'sub_total', 'isv',
+                    'total', 'is_completed']
+
+
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Partner)
-admin.site.register(models.Motorist)
-admin.site.register(models.Truck)
-admin.site.register(models.Client)
-admin.site.register(models.Freight)
+admin.site.register(models.Partner, PartnerAdmin)
+admin.site.register(models.Motorist, MotoristAdmin)
+admin.site.register(models.Truck, TruckAdmin)
+admin.site.register(models.Client, ClientAdmin)
+admin.site.register(models.Freight, FreightAdmin)
 admin.site.register(models.Billing)
 admin.site.register(models.Commission)
