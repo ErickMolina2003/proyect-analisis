@@ -72,7 +72,7 @@ class Partner(models.Model):
 
 class Motorist(models.Model):
     """Motorist in the system"""
-    id_partner = models.ForeignKey("Partner", on_delete=models.CASCADE)
+    id_partner = models.ForeignKey('Partner', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     rtn = models.CharField(max_length=255, blank=True)
@@ -89,7 +89,7 @@ class Motorist(models.Model):
 
 class Truck(models.Model):
     """Truck in the system"""
-    id_partner = models.ForeignKey("Partner", on_delete=models.CASCADE)
+    id_partner = models.ForeignKey('Partner', on_delete=models.CASCADE)
     truck_number = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
@@ -108,3 +108,35 @@ class Client(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
+class Freight(models.Model):
+    id_client = models.ForeignKey('Client', on_delete=models.CASCADE)
+    id_partner = models.ForeignKey('Partner', on_delete=models.CASCADE)
+    id_motorist = models.ForeignKey('Motorist', on_delete=models.CASCADE)
+    id_truck = models.ForeignKey('Truck', on_delete=models.CASCADE)
+    supervisor_client = models.CharField(max_length=255)
+    date = models.DateField(blank=True, null=True)
+    description = models.TextField(max_length=255)
+    sub_total = models.DecimalField(max_digits=6, decimal_places=2)
+    importe_gravado = models.DecimalField(max_digits=6, decimal_places=2)
+    isv = models.DecimalField(max_digits=6, decimal_places=2)
+    total = models.DecimalField(max_digits=6, decimal_places=2)
+    is_completed = models.BooleanField(default=False)
+    payment_method = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.description
+
+
+class Billing(models.Model):
+    id_freight = models.ForeignKey('Freight', on_delete=models.CASCADE)
+    date = models.DateField(blank=True, null=True)
+
+
+class Commission(models.Model):
+    id_billing = models.ForeignKey('Billing', on_delete=models.CASCADE)
+    commission_partner = models.DecimalField(max_digits=6, decimal_places=2)
+    commission_traesu = models.DecimalField(max_digits=6, decimal_places=2)
+    commission_motorist = models.DecimalField(max_digits=6, decimal_places=2)
+    is_payed = models.BooleanField(default=False)
